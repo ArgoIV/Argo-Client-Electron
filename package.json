@@ -1,0 +1,44 @@
+{
+  "name": "sable-matrix-client-electron",
+  "productName": "Sable",
+  "version": "0.0.1",
+  "description": "Electron wrapper for Sable Client",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "pack": "electron-builder --dir"
+  },
+  "keywords": [],
+  "author": "7w1",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^40.6.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "moe.sable.app",
+    "productName": "Sable",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "package.json"
+    ],
+    "win": {
+      "icon": "favicon.png",
+      "target": ["nsis", "portable"]
+    },
+    "linux": {
+      "icon": "favicon.png",
+      "target": ["AppImage", "deb"]
+    },
+    "mac": {
+      "icon": "favicon.png",
+      "target": ["dmg"]
+    }
+  }
+}
