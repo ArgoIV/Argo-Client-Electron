@@ -4,15 +4,12 @@
   "version": "0.0.1",
   "description": "Electron wrapper for Sable Client",
   "main": "main.js",
+  "author": "7w1",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
     "pack": "electron-builder --dir"
   },
-  "keywords": [],
-  "author": "7w1",
-  "license": "ISC",
-  "type": "commonjs",
   "devDependencies": {
     "electron": "^40.6.0",
     "electron-builder": "^24.13.3"
@@ -21,8 +18,12 @@
     "appId": "moe.sable.app",
     "productName": "Sable",
     "directories": {
-      "output": "dist"
+      "output": "dist",
+      "buildResources": "." 
     },
+    "extraResources": [
+      "favicon.png"
+    ],
     "files": [
       "main.js",
       "preload.js",
@@ -34,11 +35,22 @@
     },
     "linux": {
       "icon": "favicon.png",
-      "target": ["AppImage", "deb"]
+      "target": ["AppImage", "deb", "flatpak"],
+      "category": "Chat"
     },
-    "mac": {
-      "icon": "favicon.png",
-      "target": ["dmg"]
+    "flatpak": {
+      "base": "org.electronjs.Electron2.BaseApp",
+      "baseVersion": "23.08",
+      "finishArgs": [
+        "--socket=wayland",
+        "--socket=x11",
+        "--share=ipc",
+        "--device=dri",
+        "--device=all",
+        "--socket=pulseaudio",
+        "--share=network",
+        "--talk-name=org.freedesktop.Notifications"
+      ]
     }
   }
 }
