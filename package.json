@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "description": "Electron wrapper for Sable Client",
   "main": "main.js",
-  "author": "7w1",
+  "author": "7w1 <hi@sable.moe>",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
