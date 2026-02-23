@@ -1,4 +1,4 @@
-const { app, BrowserWindow, session, Notification, ipcMain, Tray, Menu } = require('electron');
+const { app, BrowserWindow, session, Notification, ipcMain, Tray, Menu, shell, desktopCapturer } = require('electron');
 const path = require('path');
 
 let mainWindow;
@@ -43,15 +43,41 @@ if (!gotTheLock) {
             mainWindow.webContents.executeJavaScript('localStorage.setItem("notificationsEnabled", "true");');
         });
 
+        mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+            if (!url.includes('sable.moe')) {
+                shell.openExternal(url);
+                return { action: 'deny' };
+            }
+            return { action: 'allow' };
+        });
+
+        mainWindow.webContents.on('will-navigate', (event, url) => {
+            if (!url.includes('sable.moe')) {
+                event.preventDefault();
+                shell.openExternal(url);
+            }
+        });
+
         session.defaultSession.setPermissionCheckHandler((webContents, permission) => {
-            return (permission === 'media' || permission === 'notifications');
+            return (permission === 'media' || permission === 'notifications' || permission === 'display-capture');
         });
 
         session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {
             const url = webContents.getURL();
             const isSable = url.includes('sable.moe');
-            const isAllowedPermission = (permission === 'media' || permission === 'notifications');
+            const isAllowedPermission = (permission === 'media' || permission === 'notifications' || permission === 'display-capture');
             callback(isSable && isAllowedPermission);
+        });
+
+        // TODO: window picker
+        session.defaultSession.setDisplayMediaRequestHandler((request, callback) => {
+            desktopCapturer.getSources({ types: ['screen'] }).then((sources) => {
+                if (sources && sources.length > 0) {
+                    callback({ video: sources[0], audio: 'loopback' });
+                }
+            }).catch(err => {
+                console.error('Error getting desktop sources:', err);
+            });
         });
 
         mainWindow.loadURL('https://app.sable.moe');
