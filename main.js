@@ -13,6 +13,12 @@ const getIconPath = () => {
         : path.join(__dirname, 'favicon.png');
 };
 
+const getTrayIconPath = () => {
+    return app.isPackaged
+        ? path.join(process.resourcesPath, 'tray-icon.png')
+        : path.join(__dirname, 'tray-icon.png');
+};
+
 if (!gotTheLock) {
     app.quit();
 } else {
@@ -92,7 +98,7 @@ if (!gotTheLock) {
     }
 
     function createTray() {
-        const iconPath = getIconPath();
+        const iconPath = getTrayIconPath();
 
         try {
             tray = new Tray(iconPath);
