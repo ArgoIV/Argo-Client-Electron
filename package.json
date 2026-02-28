@@ -22,7 +22,8 @@
       "buildResources": "." 
     },
     "extraResources": [
-      "favicon.png"
+      "favicon.png",
+      "icon.png"
     ],
     "files": [
       "main.js",
@@ -32,6 +33,10 @@
     "win": {
       "icon": "favicon.png",
       "target": ["nsis", "portable"]
+    },
+    "mac": {
+      "icon": "icon.png",
+      "target": ["dmg", "zip"]
     },
     "linux": {
       "icon": "favicon.png",
