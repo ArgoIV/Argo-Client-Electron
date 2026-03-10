@@ -50,7 +50,7 @@ if (!gotTheLock) {
         });
 
         mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-            if (!url.includes('sable.moe')) {
+            if (!url.includes('theargo.social')) {
                 shell.openExternal(url);
                 return { action: 'deny' };
             }
@@ -58,7 +58,7 @@ if (!gotTheLock) {
         });
 
         mainWindow.webContents.on('will-navigate', (event, url) => {
-            if (!url.includes('sable.moe')) {
+            if (!url.includes('theargo.social')) {
                 event.preventDefault();
                 shell.openExternal(url);
             }
@@ -70,7 +70,7 @@ if (!gotTheLock) {
 
         session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {
             const url = webContents.getURL();
-            const isSable = url.includes('sable.moe');
+            const isSable = url.includes('theargo.social');
             const isAllowedPermission = (permission === 'media' || permission === 'notifications' || permission === 'display-capture');
             callback(isSable && isAllowedPermission);
         });
@@ -86,7 +86,7 @@ if (!gotTheLock) {
             });
         });
 
-        mainWindow.loadURL('https://app.sable.moe');
+        mainWindow.loadURL('https://chat.theargo.social');
 
         mainWindow.on('close', (event) => {
             if (!app.isQuitting) {
